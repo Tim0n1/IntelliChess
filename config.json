@@ -1,0 +1,24 @@
+{
+    "video": {
+        "resolution": [
+            640,
+            640
+        ],
+        "framerate": 25,
+        "codec": "XVID"
+    },
+    "hough_transform": {
+        "min_line_votes": 130,
+        "canny_threshold_1": 100,
+        "canny_threshold_2": 200,
+        "coordinate_value_threshold": 1000
+    },
+    "lines": {
+        "max_horizontal_line_slope": 0.15,
+        "max_vertical_line_threshold": 0.85
+    },
+    "dots": {
+        "radius_of_extinction": 15,
+        "minimum_difference_ratio": 0.85
+    }
+}
