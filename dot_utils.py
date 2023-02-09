@@ -30,11 +30,11 @@ class Dot:
 
     @property
     def pos_x(self):
-        return self._position[1]
+        return self._position[0]
 
     @property
     def pos_y(self):
-        return self._position[0]
+        return self._position[1]
 
     @position.setter
     def position(self, pos):
@@ -82,7 +82,29 @@ class Dots:
                             self.dot_objects.remove(dot2)
 
     def apply_dot_coordinates(self):
-        pass
+        unique_coordinates_y = []
+        dots_y = self.get_all_dots_from_column(0)
+        for dot in dots_y:
+            unique_coordinates_y.append(dot.pos_y)
+        unique_coordinates_y.sort()
+        for dot in self.dot_objects:
+            if dot.pos_y not in unique_coordinates_y:
+                continue
+            new_y = unique_coordinates_y.index(dot.pos_y)
+            dot.position = (dot.pos_x, new_y)
+        unique_coordinates_x = []
+        dots_x = self.get_all_dots_from_row(0)
+        for dot in dots_x:
+            unique_coordinates_x.append(dot.pos_x)
+        unique_coordinates_x.sort()
+        print(unique_coordinates_x)
+        for dot in self.dot_objects:
+            if dot.pos_x not in unique_coordinates_x:
+                print('mamkaaaaa muuuuuuuuuuu')
+                continue
+            new_x = unique_coordinates_x.index(dot.pos_x)
+            dot.position = (new_x, dot.pos_y)
+        # todo this is bullshit
 
     def find_distances_h(self, n):
         distances = []
@@ -177,9 +199,9 @@ class Dots:
                 continue
             if d is None:
                 continue
-            print(d)
-            plt.plot([i+1 for i in range(len(d))], [i[1] for i in d])
-            plt.show()
+            # print(d)
+            # plt.plot([i+1 for i in range(len(d))], [i[1] for i in d])
+            # plt.show()
 
 
 

@@ -126,7 +126,7 @@ class Lines:
                 if dot is None:
                     continue
                 else:
-                    self.intersection_dots.append(Dot(dot, (ny, nx)))
+                    self.intersection_dots.append(Dot(dot, (nx, ny)))
 
     def find_vertical_and_horizontal_lines(self):
         vertical_lines = []

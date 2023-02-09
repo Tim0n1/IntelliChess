@@ -41,7 +41,7 @@ def write_to_video(file):
                         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         color=(0, 255, 0),
                         thickness=1,
-                        fontScale=0.5)
+                        fontScale=0.4)
 
         for line in lines[1]:
             cv2.line(frame, (line.x1, line.y1), (line.x2, line.y2), (0, 255, 0), 2)
