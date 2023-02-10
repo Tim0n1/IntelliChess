@@ -112,6 +112,7 @@ class Lines:
     def filter_dots(self):
         dots = Dots(self.intersection_dots)
         dots.filter_dots()
+        dots.apply_dot_coordinates()
         dots.filter_dots_via_gap()
         dots.apply_dot_coordinates()
         filtered = dots.dot_objects

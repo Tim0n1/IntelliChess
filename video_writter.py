@@ -10,7 +10,7 @@ def write_to_video(file):
     window_name = "Writing A Video"
     cv2.namedWindow(window_name)
 
-    cap = cv2.VideoCapture(f'{videos_path}/{file}')
+    cap = cv2.VideoCapture(f'{videos_path}/{file}')  # 0 for webcam
 
     filename = f'{videos_path}/out.avi'
     codec = cv2.VideoWriter_fourcc(*config['codec'])
