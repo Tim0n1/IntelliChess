@@ -7,7 +7,7 @@ from config import config, res_x, res_y
 
 
 m_horizontal = config['lines']['max_horizontal_line_slope']
-m_vertical = config['lines']['max_vertical_line_threshold']
+m_vertical = config['lines']['max_vertical_line_slope']
 
 
 class Line:
@@ -116,8 +116,38 @@ class Lines:
         dots.filter_dots_via_gap()
         dots.apply_dot_coordinates()
         filtered = dots.dot_objects
-        self.intersection_dots = filtered
-        #time.sleep(0.05)
+        self.intersection_dots = filtered.copy()
+
+    def initialize_chess_squares(self):
+        dots = Dots(self.intersection_dots)
+        if len(dots.dot_objects) == 81:
+            print('davaii')
+        # new_dots = []
+        # r, c = dots.get_number_of_rows_columns()
+        # print(r,c,'<--')
+        #print(dots.get_all_dots_from_row(0))
+        # if r == 9 and c == 9:
+        #     for i in range(r):
+        #         row = dots.get_all_dots_from_row(i)
+        #         print(len(row))
+        #         rx1 = row[0].x
+        #         ry1 = row[0].y
+        #         rx2 = row[-1].x
+        #         ry2 = row[-1].y
+        #         for j in range(c):
+        #             column = dots.get_all_dots_from_column(j)
+        #             print(len(column))
+        #             cx1 = column[0].x
+        #             cy1 = column[0].y
+        #             cx2 = column[-1].x
+        #             cy2 = column[-1].y
+        #             x, y = Lines.line_intersection(((rx1, ry1), (rx2, ry2)), ((cx1, cy1), (cx2, cy2)))
+        #             new_dots.append(Dot((x, y), (j, i)))
+        #     self.intersection_dots = new_dots
+        # else:
+        #     pass
+            # self.intersection_dots = None
+            # return None
 
     def find_lines_intersections(self):
         horizontal, vertical = Lines.find_vertical_and_horizontal_lines(self)

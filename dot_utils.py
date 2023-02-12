@@ -46,6 +46,15 @@ class Dots:
     def __init__(self, dot_objects: list):
         self.dot_objects = dot_objects
 
+    def get_number_unique_y_pos(self):
+        y_values = {}
+        for dot in self.dot_objects:
+            if dot.pos_y in y_values.keys():
+                y_values[dot.pos_y] += 1
+            else:
+                y_values[dot.pos_y] = 1
+        return y_values
+
     def get_all_dots_from_column(self, n_column):
         dots = []
         for dot in self.dot_objects:
@@ -54,11 +63,26 @@ class Dots:
         return dots
 
     def get_all_dots_from_row(self, n_row):
+        # indexes = list(self.get_number_unique_y_pos().keys())
+        #dots = []
+        # if indexes == []:
+        #     return dots,0
+        # print(indexes)
+        # print(n_row)
+        # n_row = indexes[n_row]
         dots = []
         for dot in self.dot_objects:
             #print(dot)
             if dot.pos_y == n_row:
                 dots.append(dot)
+        while len(dots) == 0:
+            n_row += 1
+            if n_row > 9:
+                return dots
+            for dot in self.dot_objects:
+                if dot.pos_y == n_row:
+                    dots.append(dot)
+
         return dots
 
     def delete_all_dots_from_row(self, n_row):
@@ -100,15 +124,6 @@ class Dots:
                         if dot2 in self.dot_objects:
                             self.dot_objects.remove(dot2)
 
-    def get_number_unique_y_pos(self):
-        y_values = {}
-        for dot in self.dot_objects:
-            if dot.pos_y in y_values.keys():
-                y_values[dot.pos_y] += 1
-            else:
-                y_values[dot.pos_y] = 1
-        return y_values
-
     # resets the dots coordinates (used after filtering)
     def apply_dot_coordinates(self):
         r, c = self.get_number_of_rows_columns()
@@ -128,17 +143,23 @@ class Dots:
         l_del = []
         y_values = self.get_number_unique_y_pos()
         for k, v in y_values.items():
-            if v <= 1:
+            if v <= 2:
                 l_del.append(k)
         for i in self.dot_objects:
             if i.pos_y in l_del:
                 self.dot_objects.remove(i)
 
+        for row in range(r):
+            dots_x = self.get_all_dots_from_row(row)
+            dots_x.sort(key=lambda x: x.x)
+            for n1, dot in enumerate(dots_x):
+                dot.position = (n1, row)
+
 
     # find distances of adjacent dots on nth horizontal line
     def find_distances_h(self, n):
         distances = []
-        dots = Dots.get_all_dots_from_row(self, n)
+        dots = self.get_all_dots_from_row(n)
 
         for n1, dot1 in enumerate(dots):
             for dot2 in dots[n1+1: len(dots)]:
@@ -193,7 +214,7 @@ class Dots:
 
     # gets dots that are not in 'mrd' ratio
     @staticmethod
-    def get_unnecessary_dots(d, mrd, type_line):
+    def get_unnecessary_dots(d, mrd):
         trash_dots = []
         for distance in d:
             if min(distance[1], mrd)/max(distance[1], mrd) < dot_distance_ration_diff:
@@ -244,7 +265,7 @@ class Dots:
                 continue
             mrd = self.find_most_recurring_distance_horizontal_vertical(d)
 
-            trash_dots = Dots.get_unnecessary_dots(d, mrd, 'h')
+            trash_dots = Dots.get_unnecessary_dots(d, mrd)
             for i in trash_dots:
                 if i in self.dot_objects:
                     self.dot_objects.remove(i)
@@ -266,42 +287,49 @@ class Dots:
             distances = np.asarray([i[1] for i in d], dtype=np.int)
             if len(distances) < 3:
                 continue
-            print(distances)
+
             d_indexes1 = []
-            grad_distances = np.gradient(distances, 8)
+            # Calculates derivative of the distances between lines
+            grad_distances = np.round(np.gradient(distances, 8), 1)
+
             for i in range(len(grad_distances)):
                 if (i + 1) == len(grad_distances):
                     break
-                if abs(grad_distances[i] - grad_distances[i+1]) > 2:
+                if abs(grad_distances[i] + grad_distances[i+1]) > 2:
                     d_indexes1.append(i)
                 else:
                     break
             d_indexes2 = []
             for i in range(len(grad_distances)):
-                if abs(grad_distances[-i] - grad_distances[-i-1]) > 2:
-                    d_indexes2.append(i)
+                if abs(-i-2) == len(grad_distances):
+                    break
+                d1 = grad_distances[-i-1]
+                d2 = grad_distances[-i - 2]
+                if d1 < 0 and d2 < 0:
+                    if abs(grad_distances[-i-1] + grad_distances[-i-2]) > 3:
+                        d_indexes2.append(len(grad_distances) - (i+1))
+                    else:
+                        break
                 else:
                     break
             for i in d_indexes1:
                 del_rows = []
                 dot = d[i][0][0]
-                # if dot in self.dot_objects:
-                #     self.dot_objects.remove(dot)
                 if dot.pos_y in del_rows:
                     continue
                 self.delete_all_dots_from_row(dot.pos_y)
                 del_rows.append(dot.pos_y)
             for i in d_indexes2:
-                if i >= 0.5*c:
+                # Checks if there are lines on the other side of the board
+
                     del_rows = []
                     dot = d[i][0][1]
-                    # if dot in self.dot_objects:
-                    #     self.dot_objects.remove(dot)
                     if dot.pos_y in del_rows:
                         continue
                     dot = d[i][0][1]
                     self.delete_all_dots_from_row(dot.pos_y)
-                    #todo ne zasicha poslednite redundant linii
+                    del_rows.append(dot.pos_y)
+
 
 
 
