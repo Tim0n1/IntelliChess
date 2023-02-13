@@ -1,5 +1,5 @@
 import time
-
+from square_utils import Square
 from dot_utils import Dot, Dots
 import cv2
 import matplotlib.pyplot as plt
@@ -119,9 +119,24 @@ class Lines:
         self.intersection_dots = filtered.copy()
 
     def initialize_chess_squares(self):
+        squares = config['squares']
         dots = Dots(self.intersection_dots)
+        initialized = []
         if len(dots.dot_objects) == 81:
             print('davaii')
+            for column in range(8):
+                for square in range(8):
+                    p_A = dots.find_dot_by_pos(column, square+1)
+                    p_B = dots.find_dot_by_pos(column+1, square+1)
+                    p_C = dots.find_dot_by_pos(column+1, square)
+                    p_D = dots.find_dot_by_pos(column, square)
+                    square_name = (squares[str(column+1)], (8-square))
+                    initialized.append(Square(p_A, p_B, p_C, p_D, square_name))
+            return initialized
+        else:
+            return None
+
+
         # new_dots = []
         # r, c = dots.get_number_of_rows_columns()
         # print(r,c,'<--')

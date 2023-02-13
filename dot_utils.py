@@ -12,6 +12,7 @@ class Dot:
         self._x = dot[0]
         self._y = dot[1]
         self._position = position  # (pos_on_h_lines, pos_on_v_lines)
+        self.square = None
 
     @property
     def x(self):
@@ -330,6 +331,10 @@ class Dots:
                     self.delete_all_dots_from_row(dot.pos_y)
                     del_rows.append(dot.pos_y)
 
+    def find_dot_by_pos(self, pos_x, pos_y):
+        for dot in self.dot_objects:
+            if (dot.pos_x == pos_x) and (dot.pos_y == pos_y):
+                return dot
 
 
 

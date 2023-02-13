@@ -1,7 +1,7 @@
 from config import config, res_x, res_y
 import cv2
 from hough_transform import hough
-
+import time
 videos_path = 'videos'
 config = config['video']
 
@@ -32,19 +32,31 @@ def write_to_video(file):
         lines = hough(frame)
         if lines is None:
             continue
-        #print(lines)
-        for dot in lines[0]:
-            cv2.circle(frame, (dot.x, dot.y), radius=4, color=(0, 0, 255), thickness=-1)
-            cv2.putText(frame,
-                        str(dot.position),
-                        (dot.x, dot.y),
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        color=(0, 255, 0),
-                        thickness=1,
-                        fontScale=0.4)
+        if lines[1] == 1:
+            for square in lines[0]:
+                x, y = square.find_center()
+                cv2.putText(frame,
+                            str(square.square_name_str()),
+                            (x, y),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            color=(0, 255, 0),
+                            thickness=1,
+                            fontScale=0.5)
+            time.sleep(1)
+        else:
 
-        for line in lines[1]:
-            cv2.line(frame, (line.x1, line.y1), (line.x2, line.y2), (0, 255, 0), 2)
+            for dot in lines[0]:
+                cv2.circle(frame, (dot.x, dot.y), radius=4, color=(0, 0, 255), thickness=-1)
+                cv2.putText(frame,
+                            str(dot.position),
+                            (dot.x, dot.y),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            color=(0, 255, 0),
+                            thickness=1,
+                            fontScale=0.4)
+
+            for line in lines[1]:
+                cv2.line(frame, (line.x1, line.y1), (line.x2, line.y2), (0, 255, 0), 2)
 
         video_output.write(frame)
 

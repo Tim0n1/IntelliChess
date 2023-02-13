@@ -66,8 +66,11 @@ def hough(img):
     lines.get_line_objects()
     lines.find_lines_intersections()
     lines.filter_dots()
-    lines.initialize_chess_squares()
+    squares = lines.initialize_chess_squares()
     borders = lines.find_borders()
+    if squares is not None:
+        print(len(squares))
+        return squares, 1
     if (borders is not None) and (lines.intersection_dots is not None):
         return [lines.intersection_dots, borders]
     elif lines.intersection_dots is not None:
