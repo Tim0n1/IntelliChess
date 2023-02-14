@@ -71,7 +71,7 @@ def hough(img):
     if squares is not None:
         print(len(squares))
         return squares, 1
-    if (borders is not None) and (lines.intersection_dots is not None):
+    elif (borders is not None) and (lines.intersection_dots is not None):
         return [lines.intersection_dots, borders]
     elif lines.intersection_dots is not None:
         return [lines.intersection_dots, []]

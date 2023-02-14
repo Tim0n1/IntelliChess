@@ -123,7 +123,6 @@ class Lines:
         dots = Dots(self.intersection_dots)
         initialized = []
         if len(dots.dot_objects) == 81:
-            print('davaii')
             for column in range(8):
                 for square in range(8):
                     p_A = dots.find_dot_by_pos(column, square+1)

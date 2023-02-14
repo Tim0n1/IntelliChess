@@ -42,9 +42,8 @@ def write_to_video(file):
                             color=(0, 255, 0),
                             thickness=1,
                             fontScale=0.5)
-            time.sleep(1)
-        else:
 
+        else:
             for dot in lines[0]:
                 cv2.circle(frame, (dot.x, dot.y), radius=4, color=(0, 0, 255), thickness=-1)
                 cv2.putText(frame,
@@ -63,6 +62,8 @@ def write_to_video(file):
         cv2.imshow(window_name, frame)
         if cv2.waitKey(1) == 24:
             break
+        if lines[1] == 1:
+            time.sleep(1)
     cv2.destroyAllWindows()
     video_output.release()
     cap.release()
