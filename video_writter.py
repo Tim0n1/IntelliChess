@@ -9,8 +9,10 @@ config = config['video']
 def write_to_video(file):
     window_name = "Writing A Video"
     cv2.namedWindow(window_name)
-
-    cap = cv2.VideoCapture(f'{videos_path}/{file}')  # 0 for webcam
+    if file == 0:
+        cap = cv2.VideoCapture(0)
+    else:
+        cap = cv2.VideoCapture(f'{videos_path}/{file}')  # 0 for webcam
 
     filename = f'{videos_path}/out.avi'
     codec = cv2.VideoWriter_fourcc(*config['codec'])
@@ -63,10 +65,11 @@ def write_to_video(file):
         if cv2.waitKey(1) == 24:
             break
         if lines[1] == 1:
-            time.sleep(1)
+            time.sleep(0.2)
     cv2.destroyAllWindows()
     video_output.release()
     cap.release()
 
 
 write_to_video('original.mp4')
+#write_to_video(0)

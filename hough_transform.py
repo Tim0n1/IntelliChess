@@ -62,6 +62,8 @@ def hough(img):
         y2 = int(y0 - coordinate_value_threshold * (a))
 
         lines_drawn.append([(x1, y1), (x2, y2)])
+    squares = None
+    borders = None
     lines = Lines(lines_drawn)
     lines.get_line_objects()
     lines.find_lines_intersections()

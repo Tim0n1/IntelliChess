@@ -129,6 +129,8 @@ class Lines:
                     p_B = dots.find_dot_by_pos(column+1, square+1)
                     p_C = dots.find_dot_by_pos(column+1, square)
                     p_D = dots.find_dot_by_pos(column, square)
+                    if (p_A is None) or (p_B is None) or (p_C is None) or (p_D is None):
+                        return None
                     square_name = (squares[str(column+1)], (8-square))
                     initialized.append(Square(p_A, p_B, p_C, p_D, square_name))
             return initialized
@@ -139,7 +141,7 @@ class Lines:
         # new_dots = []
         # r, c = dots.get_number_of_rows_columns()
         # print(r,c,'<--')
-        #print(dots.get_all_dots_from_row(0))
+        # print(dots.get_all_dots_from_row(0))
         # if r == 9 and c == 9:
         #     for i in range(r):
         #         row = dots.get_all_dots_from_row(i)
@@ -160,8 +162,8 @@ class Lines:
         #     self.intersection_dots = new_dots
         # else:
         #     pass
-            # self.intersection_dots = None
-            # return None
+        #     self.intersection_dots = None
+        #     return None
 
     def find_lines_intersections(self):
         horizontal, vertical = Lines.find_vertical_and_horizontal_lines(self)

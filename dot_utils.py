@@ -195,6 +195,8 @@ class Dots:
             for j in distances[n + 1: len(distances)]:
                 divisible = min(i[1], j[1])
                 divisor = max(i[1], j[1])
+                if divisor == 0:
+                    continue
                 if divisible / divisor >= dot_distance_ration_diff:
                     r_distances[n] += 1
         legit_d = []
@@ -285,13 +287,13 @@ class Dots:
                 continue
             if d is None:
                 continue
-            distances = np.asarray([i[1] for i in d], dtype=np.int)
+            distances = np.asarray([i[1] for i in d], dtype=int)
             if len(distances) < 3:
                 continue
 
             d_indexes1 = []
             # Calculates derivative of the distances between lines
-            grad_distances = np.round(np.gradient(distances, 8), 1)
+            grad_distances = np.round(np.gradient(distances, 9), 1)
 
             for i in range(len(grad_distances)):
                 if (i + 1) == len(grad_distances):
