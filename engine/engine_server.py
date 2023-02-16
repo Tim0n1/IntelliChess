@@ -1,9 +1,9 @@
-import stockfish
+import engine
 import socket
 import json
 
 # Define the server address and port
-SERVER_ADDRESS = 'localhost'
+SERVER_ADDRESS = '192.168.1.102'
 SERVER_PORT = 5555
 
 # Create a socket object
@@ -35,7 +35,12 @@ while True:
         # Parse the message as JSON
         try:
             message = json.loads(data)
-            print(f'Received message: {message}')
+            input1 = message['message']
+            print(f'Received message: {input1}')
+            if input1[0:4] == '-fen':
+                print('fen->',input1[6:])
+            if input1[0:3] == '-bm':
+
 
             # Create a response message
             response = {'message': 'kvo staa bace'}
